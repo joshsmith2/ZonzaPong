@@ -31,14 +31,14 @@ var maxScore = 7;
 var face1 = true;
 var face2 = false;
 
-var paddleId = 0;
+window.paddleId = 0;
 
 // Socket IO
 var socket;
 
 function initSocket() {
     // Socket
-    socket = new io.connect('http://0.0.0.0:8080');
+    socket = new io.connect(window.location.origin);
 
     // Establish event handlers
     socket.on('disconnect', function() {
@@ -48,14 +48,19 @@ function initSocket() {
     socket.on('game', function(data) {
 
         console.log(data);
-        ball.position = data.ball;
-        paddle1.position = data.paddle1;
-        paddle2.position = data.paddle2;
+        if (window.paddleId != 1) {
+            ball.position = data.ball;
+            paddle1.position = data.paddle1;
+        }
+        if (window.paddleId != 2) {
+            paddle2.position = data.paddle2;
+        }
+
     });
 
     socket.on('register', function(paddle_id) {
-        paddleId = parseInt(paddle_id);
-        console.log(paddleId);
+        window.paddleId = parseInt(paddle_id);
+        console.log(window.paddleId);
     });
 
     socket.on('start', function() {
@@ -380,7 +385,7 @@ function draw()
     renderer.render(scene, camera);
     // loop draw function call
     requestAnimationFrame(draw);
-    if (window.ready) {
+    if (window.ready && window.paddleId == 1) {
         ballPhysics();
     }
     paddlePhysics();
@@ -674,34 +679,38 @@ function matchScoreCheck()
     }
 }
 
+function getFacePos() {
+    var calc = parseInt((-window.face * window.sensitivity) * 90)
+    if (calc > 90) {
+        calc = 90;
+    } else if (calc < -90) {
+        calc = -90;
+    }
+    return calc
+}
+
 function player1PaddleMovementFace()
 {
-    if (face1 !== false)
+    if (window.paddleId == 1)
     {
-        var calc = parseInt((-window.face * window.sensitivity) * 90)
-        if (calc > 90) {
-            calc = 90;
-        } else if (calc < -90) {
-            calc = -90;
-        }
-        paddle1.position.y = calc;
+        paddle1.position.y = getFacePos();
     }
-    else
-    {
-        player1PaddleMovement();
-    }
+//    else
+//    {
+//        player1PaddleMovement();
+//    }
 }
 
 function player2PaddleMovementFace()
 {
-    if (face2 !== false)
+    if (window.paddleId == 2)
     {
-        paddle2.position.y = face;
+        paddle2.position.y = getFacePos();
     }
-    else
-    {
-        player2PaddleMovement();
-    }
+//    else
+//    {
+//        player2PaddleMovement();
+//    }
 }
 
 $(function () {

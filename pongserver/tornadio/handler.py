@@ -21,12 +21,15 @@ class IOConnection(tornadio2.conn.SocketConnection):
 
     @event
     def register(self):
+        self.l('Register')
         paddle_id = None
         if len(self.players) == 0:
             paddle_id = 1
         elif len(self.players) == 1:
             paddle_id = 2
         if paddle_id:
+            self.players.add(self)
+            self.l('Registered: {}'.format(paddle_id))
             self.emit("register", paddle_id)
 
     @event
@@ -45,18 +48,18 @@ class IOConnection(tornadio2.conn.SocketConnection):
 
     @event
     def game(self, ball, paddle1, paddle2):
-        self.l("---- GAME Event ----")
-        self.l(ball)
-        self.l(paddle1)
-        self.l(paddle2)
-        self.emit("game", {
-            "ball": ball,
-            "paddle1": paddle1,
-            "paddle2": paddle2,
-        })
+        #self.l("---- GAME Event ----")
+        #self.l(ball)
+        #self.l(paddle1)
+        #self.l(paddle2)
+        for conn in self.players:
+            conn.emit("game", {
+                "ball": ball,
+                "paddle1": paddle1,
+                "paddle2": paddle2,
+            })
 
     def on_open(self, info):
-        self.players.add(self)
         l("Connected !")
         self.emit('toto', {"msg":"Connected"})
 
@@ -66,7 +69,8 @@ class IOConnection(tornadio2.conn.SocketConnection):
             p.send(message)
 
     def on_close(self):
-        self.players.remove(self)
+        if self in self.players:
+            self.players.remove(self)
 
     def _check_token(self, token):
         return True if self.api_key == token else False
