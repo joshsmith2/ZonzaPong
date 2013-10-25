@@ -1,0 +1,10 @@
+{% extends "front/include/base.html" %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+{{ block.super }}
+<a href="{% url 'admin' %}">Administration</a>
+{% endblock content %}
+
+

@@ -15,7 +15,7 @@ SOCKET_IO_REMOTE_ADDR = "0.0.0.0"
 
 TORNADIO_LOGGING_LEVEL = "debug" if DEBUG else "info"
 
-DOCUMENT_ROOT = os.path.dirname(os.path.abspath(__file__))
+DOCUMENT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 RESOURCES_ROOT = DOCUMENT_ROOT + "/resources"
 
