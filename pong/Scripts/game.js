@@ -21,7 +21,7 @@ var paddle1DirY = 0, paddle2DirY = 0, paddleSpeed = 3;
 
 // ball variables
 var ball, paddle1, paddle2;
-var ballDirX = 1, ballDirY = 1, ballSpeed = 2;
+var ballDirX = 1, ballDirY = 0.5, ballSpeed = 2;
 
 // game-related variablesa
 var score1 = 0, score2 = 0;
@@ -338,7 +338,6 @@ function draw()
 	renderer.render(scene, camera);
 	// loop draw function call
 	requestAnimationFrame(draw);
-	ballSpeed = 0
 	ballPhysics();
 	paddlePhysics();
 	cameraPhysics();
@@ -586,11 +585,9 @@ function resetBall(loser)
 	}
 
 	// set the ball to move +ve in y plane (towards left from the camera)
-	ballDirY = 1;
+	ballDirY = 0.3;
 	ballSpeed = 2
 	paddleSpeed = 3
-	face1 = false;
-	face2 = false;
 }
 
 var bounceTime = 0;
