@@ -9,7 +9,7 @@
 				background-color: black;
 			}
 			#gameCanvas {
-				background-color: black;
+				background-image:url(/resources/images/zonza-bg.png);
 				width: 640px;
 				height: 360px;
 				margin: auto;
@@ -59,12 +59,14 @@
 			<h2 id='winnerBoard'>First to 7 wins!</h2>
 			<h3>Allow webcam
 			<br>And move your head!</h3>
+            <h4></h4>
 		</div>
         <div id="webcam">
             <canvas width="320" height="240" class="outputCanvas"></canvas>
             <canvas width="320" height="240" class="inputCanvas input"></canvas>
             <video class="inputVideo input" autoplay loop></video>
             Sensitivity: <input type="range" class="sens" min="0" max="10" value="5">
+            <input type="button" class="reset" value="reset" />
         </div>
         <input type="button" id="ready" value="Ready" />
 	</body>
