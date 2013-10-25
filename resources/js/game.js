@@ -66,7 +66,11 @@ function initSocket() {
     socket.on('register', function(paddle_id) {
         window.paddleId = parseInt(paddle_id);
         console.log(window.paddleId);
-        $('#scoreboard h4').html('You are player ' + paddle_id);
+        if (paddle_id == 2) {
+            $('#scoreboard h4').html('You are player ' + paddle_id + ', the top one');
+        } else {
+            $('#scoreboard h4').html('You are player ' + paddle_id);
+        }
     });
 
     socket.on('start', function() {
