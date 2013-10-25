@@ -18,6 +18,11 @@ class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         self.render(settings.DOCUMENT_ROOT + '/resources/io.html')
 
+class GameHandler(tornado.web.RequestHandler):
+    """Game Page handler"""
+    def get(self):
+        self.render(settings.DOCUMENT_ROOT + '/resources/pong.html')
+
 class SocketIOHandler(tornado.web.RequestHandler):
     def get(self):
         self.render(settings.RESOURCES_ROOT + '/socket.io.js')
@@ -45,11 +50,12 @@ def application(argv=None):
     port = int(argv[1]) if (len(argv) > 1) else settings.SOCKET_IO_PORT
 
     application = tornado.web.Application(
-    SocketRouter.apply_routes([(r"/", IndexHandler),
-                             (r"/socket.io.js", SocketIOHandler),
-                             (r"/resources/(.*)", tornado.web.StaticFileHandler,
+    SocketRouter.apply_routes([ (r"/", IndexHandler),
+                                (r"/game/", GameHandler),
+                                (r"/socket.io.js", SocketIOHandler),
+                                (r"/resources/(.*)", tornado.web.StaticFileHandler,
                                     {"path": settings.RESOURCES_ROOT}),
-                             (r"/WebSocketMain.swf", WebSocketFileHandler)
+                                (r"/WebSocketMain.swf", WebSocketFileHandler)
                             ]),
             flash_policy_port=8043,
             flash_policy_file=settings.DOCUMENT_ROOT + '/flashpolicy.xml',

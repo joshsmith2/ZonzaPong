@@ -30,6 +30,42 @@ var maxScore = 7;
 
 var face1 = false;
 var face2 = false;
+
+var paddleId = 0;
+
+// Socket IO
+var socket;
+
+function initSocket() {
+    // Socket
+    socket = new io.connect('http://0.0.0.0:8080');
+
+    // Establish event handlers
+    socket.on('disconnect', function() {
+        socket.socket.reconnect();
+    });
+
+    socket.on('game', function(data) {
+
+        console.log(data);
+        ball.position = data.ball;
+        paddle1.position = data.paddle1;
+        paddle2.position = data.paddle2;
+    });
+
+    socket.on('register', function(paddle_id) {
+        paddleId = parseInt(paddle_id);
+        console.log(paddleId);
+    });
+
+    socket.on('start', function() {
+        // Display a countdown and then just start the game
+    });
+
+    socket.emit('register');
+
+}
+
 // ------------------------------------- //
 // ------- GAME FUNCTIONS -------------- //
 // ------------------------------------- //
@@ -43,6 +79,7 @@ function setup()
     score1 = 0;
     score2 = 0;
 
+    initSocket();
     // set up all the 3D objects in the scene
     createScene();
 
@@ -334,6 +371,8 @@ function createScene()
 
 function draw()
 {
+
+
     // draw THREE.JS scene
     renderer.render(scene, camera);
     // loop draw function call
@@ -343,6 +382,14 @@ function draw()
     cameraPhysics();
     player1PaddleMovementFace();
     player2PaddleMovementFace();
+
+    socket.emit('game', {
+        "ball": ball.position,
+        "paddle1": paddle1.position,
+        "paddle2": paddle2.position
+    });
+
+
 }
 
 function ballPhysics()
