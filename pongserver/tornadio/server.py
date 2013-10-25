@@ -11,6 +11,7 @@ from pongserver import settings
 import sys
 import tornadio2
 import tornado
+import zlib
 
 class IndexHandler(tornado.web.RequestHandler):
     """Index Page handler : TESTING ONLY"""
@@ -41,12 +42,13 @@ class StartGameHandler(tornado.web.RequestHandler):
         self.render(settings.DOCUMENT_ROOT + '/resources/start.html')
 
     def post(self):
-        import pdb; pdb.set_trace()
         file1 = self.request.files['image_file'][0]
+        filename = zlib.crc32('youareadick')
+        filename = '{}{}'.format(filename, file1['filename'])
         # now you can do what you want with the data, we will just save the file to an uploads folder
-        output_file = open(settings.RESOURCES_ROOT + "/images/" + file1['filename'], 'w')
+        output_file = open(settings.RESOURCES_ROOT + "/images/" + filename, 'w')
         output_file.write(file1['body'])
-        self.redirect('/game/')
+        self.redirect('/game/?token={}'.format(filename))
 
 def application(argv=None):
     print "start"
