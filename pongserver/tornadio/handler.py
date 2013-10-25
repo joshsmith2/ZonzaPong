@@ -13,12 +13,28 @@ l = logging.info
 
 class IOConnection(tornadio2.conn.SocketConnection):
     # Class level variable
-    participants = set()
+    players = set()
 
     def __init__(self, *args, **kwargs):
         super(IOConnection, self).__init__(*args, **kwargs)
         self.l = logging.info
 
+    @event
+    def register(self):
+        self.l('Register')
+        paddle_id = None
+        if len(self.players) == 0:
+            paddle_id = 1
+        elif len(self.players) == 1:
+            paddle_id = 2
+        if paddle_id:
+            self.players.add(self)
+            self.l('Registered: {}'.format(paddle_id))
+            self.emit("register", paddle_id)
+
+    @event
+    def paddle_move(self, paddle, paddle_id):
+        self.emit()
 
     @event
     def ping(self):
@@ -30,18 +46,33 @@ class IOConnection(tornadio2.conn.SocketConnection):
         self.l("Move EVENT received ! --> received position is: {}".format(position))
         self.emit("pingback", position)
 
+    @event
+    def game(self, ball, paddle1, paddle2, score1, score2):
+        #self.l("---- GAME Event ----")
+        #self.l(ball)
+        #self.l(paddle1)
+        #self.l(paddle2)
+        for conn in self.players:
+            conn.emit("game", {
+                "ball": ball,
+                "paddle1": paddle1,
+                "paddle2": paddle2,
+                "score1": score1,
+                "score2": score2,
+            })
+
     def on_open(self, info):
-        self.participants.add(self)
         l("Connected !")
         self.emit('toto', {"msg":"Connected"})
 
     def on_message(self, message):
         # Pong message back
-        for p in self.participants:
+        for p in self.players:
             p.send(message)
 
     def on_close(self):
-        self.participants.remove(self)
+        if self in self.players:
+            self.players.remove(self)
 
     def _check_token(self, token):
         return True if self.api_key == token else False
