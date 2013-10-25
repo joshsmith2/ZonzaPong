@@ -11,6 +11,7 @@ from pongserver import settings
 import sys
 import tornadio2
 import tornado
+from tornado import template
 import zlib
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -21,7 +22,9 @@ class IndexHandler(tornado.web.RequestHandler):
 class GameHandler(tornado.web.RequestHandler):
     """Game Page handler"""
     def get(self):
-        self.render(settings.DOCUMENT_ROOT + '/resources/pong.html')
+        token = self.get_argument('token')
+        loader = template.Loader(settings.RESOURCES_ROOT)
+        self.finish(loader.load('pong.html').generate(token=token))
 
 class SocketIOHandler(tornado.web.RequestHandler):
     def get(self):
@@ -48,6 +51,7 @@ class StartGameHandler(tornado.web.RequestHandler):
         # now you can do what you want with the data, we will just save the file to an uploads folder
         output_file = open(settings.RESOURCES_ROOT + "/images/" + filename, 'w')
         output_file.write(file1['body'])
+        self.redirect('/game/?token='+file1['filename'])
         self.redirect('/game/?token={}'.format(filename))
 
 def application(argv=None):

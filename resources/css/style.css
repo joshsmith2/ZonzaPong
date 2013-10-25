@@ -155,3 +155,8 @@ input.start {
 #webcam .outputCanvas {
     -webkit-transform: scaleX(-1);
 }
+
+#headtrackerMessageDiv {
+    height: 700px;
+    width: 700px;
+}
