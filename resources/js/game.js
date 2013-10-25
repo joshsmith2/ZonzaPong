@@ -34,6 +34,31 @@ var face2 = false;
 // ------- GAME FUNCTIONS -------------- //
 // ------------------------------------- //
 
+//OPTIONAL MODES (to be called sensibly through user options)
+var bigBalls = false;
+var playerNumber = 1;
+var lights = "day" //Used to control playing conditions
+var uid = "0001"
+
+//Contruct image location
+var planeImage = '/resources/images/image-' + uid + '.png'
+
+//Initialise lighting presets
+switch (lights){
+
+	case "day":
+		lightValue = 2.9;
+		lightColour = ""
+	break;
+	case "night":
+		lightValue = 0.1;
+		lightColour = ""
+	break;
+}
+
+
+
+
 function setup()
 {
     // update the board to reflect the max score for match win
@@ -98,25 +123,27 @@ function createScene()
     var paddle1Material =
       new THREE.MeshLambertMaterial(
         {
-          color: 0x1B32C0
+          color: 0x406E40
         });
     // create the paddle2's material
     var paddle2Material =
       new THREE.MeshLambertMaterial(
         {
-          color: 0xFF4045
+          color: 0x05476E
         });
     // create the plane's material
     var planeMaterial =
       new THREE.MeshLambertMaterial(
         {
-          color: 0x4BD121
+			//color: 0x534525
+			map: THREE.ImageUtils.loadTexture(planeImage)
         });
+
     // create the table's material
     var tableMaterial =
       new THREE.MeshLambertMaterial(
         {
-          color: 0x111111
+          color: 0x000000
         });
     // create the pillar's material
     var pillarMaterial =
@@ -128,7 +155,9 @@ function createScene()
     var groundMaterial =
       new THREE.MeshLambertMaterial(
         {
-          color: 0x888888
+	
+			map: THREE.ImageUtils.loadTexture('/resources/images/zonzaLogoTrans.jpg')
+
         });
 
 
@@ -163,16 +192,33 @@ function createScene()
 
     // // set up the sphere vars
     // lower 'segment' and 'ring' values will increase performance
+	if ( bigBalls === true ) {
+	//BIG BALLS MODE
+    var radius = 50,
+        segments = 60,
+        rings = 60;
+
+    // create the sphere's material
+    var sphereMaterial =
+      new THREE.MeshLambertMaterial(
+        {
+			map: THREE.ImageUtils.loadTexture(planeImage)
+        });
+	
+	}else{
+
     var radius = 5,
         segments = 6,
         rings = 6;
-
-    // // create the sphere's material
+    
+	// create the sphere's material
     var sphereMaterial =
       new THREE.MeshLambertMaterial(
         {
           color: 0xD43001
         });
+
+	}
 
     // Create a ball with sphere geometry
     ball = new THREE.Mesh(
@@ -244,50 +290,50 @@ function createScene()
 
     // we iterate 10x (5x each side) to create pillars to show off shadows
     // this is for the pillars on the left
-    for (var i = 0; i < 5; i++)
-    {
-        var backdrop = new THREE.Mesh(
-
-          new THREE.CubeGeometry(
-          30,
-          30,
-          300,
-          1,
-          1,
-          1 ),
-
-          pillarMaterial);
-
-        backdrop.position.x = -50 + i * 100;
-        backdrop.position.y = 230;
-        backdrop.position.z = -30;
-        backdrop.castShadow = true;
-        backdrop.receiveShadow = true;
-        scene.add(backdrop);
-    }
-    // we iterate 10x (5x each side) to create pillars to show off shadows
-    // this is for the pillars on the right
-    for (var j = 0; j < 5; j++)
-    {
-        var backdrop2 = new THREE.Mesh(
-
-          new THREE.CubeGeometry(
-          30,
-          30,
-          300,
-          1,
-          1,
-          1 ),
-
-          pillarMaterial);
-
-        backdrop2.position.x = -50 + i * 100;
-        backdrop2.position.y = -230;
-        backdrop2.position.z = -30;
-        backdrop2.castShadow = true;
-        backdrop2.receiveShadow = true;
-        scene.add(backdrop2);
-    }
+//    for (var i = 0; i < 5; i++)
+//    {
+//        var backdrop = new THREE.Mesh(
+//
+//          new THREE.CubeGeometry(
+//          30,
+//          30,
+//          300,
+//          1,
+//          1,
+//          1 ),
+//
+//          pillarMaterial);
+//
+//        backdrop.position.x = -50 + i * 100;
+//        backdrop.position.y = 230;
+//        backdrop.position.z = -30;
+//        backdrop.castShadow = true;
+//        backdrop.receiveShadow = true;
+//        scene.add(backdrop);
+//    }
+//    // we iterate 10x (5x each side) to create pillars to show off shadows
+//    // this is for the pillars on the right
+//    for (var j = 0; j < 5; j++)
+//    {
+//        var backdrop2 = new THREE.Mesh(
+//
+//          new THREE.CubeGeometry(
+//          30,
+//          30,
+//          300,
+//          1,
+//          1,
+//          1 ),
+//
+//          pillarMaterial);
+//
+//        backdrop2.position.x = -50 + i * 100;
+//        backdrop2.position.y = -230;
+//        backdrop2.position.z = -30;
+//        backdrop2.castShadow = true;
+//        backdrop2.receiveShadow = true;
+//        scene.add(backdrop2);
+//    }
 
     // finally we finish by adding a ground plane
     // to show off pretty shadows
@@ -315,7 +361,7 @@ function createScene()
     pointLight.position.x = -1000;
     pointLight.position.y = 0;
     pointLight.position.z = 1000;
-    pointLight.intensity = 2.9;
+    pointLight.intensity = lightValue;
     pointLight.distance = 10000;
     // add to the scene
     scene.add(pointLight);
@@ -324,7 +370,7 @@ function createScene()
     // this is important for casting shadows
     spotLight = new THREE.SpotLight(0xF8D898);
     spotLight.position.set(0, 0, 460);
-    spotLight.intensity = 1.5;
+    spotLight.intensity = 0.5;
     spotLight.castShadow = true;
     scene.add(spotLight);
 
@@ -340,7 +386,7 @@ function draw()
     requestAnimationFrame(draw);
     ballPhysics();
     paddlePhysics();
-    cameraPhysics();
+    cameraPhysics(playerNumber);
     player1PaddleMovementFace();
     player2PaddleMovementFace();
 }
@@ -486,19 +532,21 @@ function player2PaddleMovement()
 }
 
 // Handles camera and lighting logic
-function cameraPhysics()
+function cameraPhysics(playerNumber)
+
 {
+
     // we can easily notice shadows if we dynamically move lights during the game
     spotLight.position.x = ball.position.x * 2;
     spotLight.position.y = ball.position.y * 2;
 
     // move to behind the player's paddle
-    camera.position.x = paddle1.position.x - 100;
+    camera.position.x = paddle1.position.x - 110;
     camera.position.y += (paddle1.position.y - camera.position.y) * 0.05;
-    camera.position.z = paddle1.position.z + 100 + 0.04 * (-ball.position.x + paddle1.position.x);
+    camera.position.z = paddle1.position.z + 100 + 0.04;
 
     // rotate to face towards the opponent
-    camera.rotation.x = -0.01 * (ball.position.y) * Math.PI/180;
+    camera.rotation.x =  Math.PI/180 ;
     camera.rotation.y = -60 * Math.PI/180;
     camera.rotation.z = -90 * Math.PI/180;
 }
