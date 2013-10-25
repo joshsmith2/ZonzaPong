@@ -35,4 +35,9 @@ $(function () {
     $('#webcam .sens').bind('change', function (e) {
         window.sensitivity = 1.5 + $(this).val()/10*6;
     }).trigger('change');
+
+    $('#webcam .reset').bind('click', function () {
+            htracker.stop();
+            htracker.start();
+    });
 });

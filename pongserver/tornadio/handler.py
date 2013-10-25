@@ -31,6 +31,8 @@ class IOConnection(tornadio2.conn.SocketConnection):
             self.players.add(self)
             self.l('Registered: {}'.format(paddle_id))
             self.emit("register", paddle_id)
+        else:
+            self.emit("notregistered")
 
     @event
     def paddle_move(self, paddle, paddle_id):
