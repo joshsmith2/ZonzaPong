@@ -5,24 +5,42 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 </head>
 <body>
+    <canvas id="outputCanvas" width="320" height="240" style="-webkit-transform: scaleX(-1);"></canvas>
     <canvas id="inputCanvas" width="320" height="240" style="display:none"></canvas>
     <video id="inputVideo" autoplay loop style="display:none"></video>
     <div style="width:500px;height:20px;position:relative;border: 1px solid #00ff00"><div id="pos" style="position: absolute;top:0;left:250px;width:1px;height:20px;background-color:#ff0000"></div></div>
+    <input id="sensitivity" value="1.0" />
 <script type="text/javascript">
   var videoInput = document.getElementById('inputVideo');
   var canvasInput = document.getElementById('inputCanvas');
   var h_width = parseInt(canvasInput.getAttribute('width')) / 2;
   var h_height = parseInt(canvasInput.getAttribute('height')) / 2;
   var pos = $('#pos');
+  var range = 500;
+  var h_range = range / 2;
+  var sens= $('#sensitivity');
 
-  var htracker = new headtrackr.Tracker();
+	var context = document.getElementById('outputCanvas').getContext('2d');
+
+  var htracker = new headtrackr.Tracker({calcAngles: true});
   htracker.init(videoInput, canvasInput);
   htracker.start();
 
   function found(event) {
       var x = -((event.x - h_width) / h_width);
-       console.log(x);
-       pos.css('left', (x*250 + 250));
+      pos.css('left', (x*parseFloat(sens.val())*h_range + h_range));
+
+      context.drawImage(videoInput, 0, 0, h_width*2, h_height*2);
+
+	// once we have stable tracking, draw rectangle
+	context.save();
+	context.translate(event.x, event.y)
+	context.rotate(event.angle - Math.PI/2);
+
+	context.strokeStyle	= '#00CC00';
+	context.strokeRect(-Math.floor(10/2), -Math.floor(10/2)
+			, 10, 10);
+	context.restore();
   }
 
 
