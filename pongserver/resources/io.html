@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script src="socket.io.js"></script>
+  <script>
+    $(function() {
+        //var socket = new io.connect('http://' + window.location.host);
+        var socket = new io.connect('http://10.105.12.142:8080');
+
+        // Establish event handlers
+        socket.on('disconnect', function() {
+            socket.socket.reconnect();
+        });
+
+        socket.emit('toto','Hello from client !' , function(msg) {
+        	$("#logging").append(msg).append("<br />");
+        });
+
+        $("#move").click(function() {
+        	socket.emit('move', '123');
+        });
+
+        $("#ping").click(function() {
+        	socket.emit('ping');
+        });
+
+        socket.on('pingback', function(msg) {
+        	$("#logging").append(msg);
+        });
+
+        socket.on('participants', function(msg) {
+        	$("#participants").html(msg);
+        });
+
+        $("#login").click(function () {
+        	var username = $("#username").val();
+        	var password = $("#password").val();
+        	//socket.emit('authentication', username, password);
+        	//Cook2 token
+        	token = '3d53a93ee585ca0282e4ab941241ffbd43111acc';
+        	socket.emit('token_auth', token);
+        });
+
+    });
+</script>
+</head>
+<body>
+<h3>Ping!</h3>
+	<label for="username">Username</label><input type="text" name="username" value="" id="username"/>
+	<label for="password">Password</label><input type="text" name="password" value="" id="password"/>
+	<!--<input type="submit" name="submit" value="Valider" id="submit"/>-->
+	<button id="login">Login event</button>
+<div id="events">
+	<h3>Events</h3>
+	<button id="ping">ping</button>
+	<button id="move">Move!</button>
+	</div>
+<div id="logging"></div>
+<div id="participants"></div>
+</body>
+</html>
