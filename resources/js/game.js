@@ -32,7 +32,7 @@ var face1 = true;
 var face2 = false;
 window.face = 0;
 window.sensitivity = 3.0;
-var ready = false;
+window.ready = false;
 // ------------------------------------- //
 // ------- GAME FUNCTIONS -------------- //
 // ------------------------------------- //
@@ -341,7 +341,7 @@ function draw()
     renderer.render(scene, camera);
     // loop draw function call
     requestAnimationFrame(draw);
-    if (ready) {
+    if (window.ready) {
         ballPhysics();
     }
     paddlePhysics();
@@ -656,3 +656,9 @@ function player2PaddleMovementFace()
         player2PaddleMovement();
     }
 }
+
+$(function () {
+    $('#ready').click(function() {
+        window.ready = true;
+    });
+});
