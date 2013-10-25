@@ -51,6 +51,11 @@ function initSocket() {
         if (window.paddleId != 1) {
             ball.position = data.ball;
             paddle1.position = data.paddle1;
+            if (score1 != data.score1 || score2 != data.score2) {
+                score1 = data.score1;
+                score2 = data.score2;
+                matchScoreCheck();
+            }
         }
         if (window.paddleId != 2) {
             paddle2.position = data.paddle2;
@@ -396,9 +401,16 @@ function draw()
     socket.emit('game', {
         "ball": ball.position,
         "paddle1": paddle1.position,
-        "paddle2": paddle2.position
+        "paddle2": paddle2.position,
+        "score1": score1,
+        "score2": score2
     });
 
+    if (score1 >= maxScore) {
+        bouncePaddle(paddle1);
+    } else if (score2 >= maxScore) {
+        bouncePaddle(paddle2);
+    }
 
 }
 
@@ -409,8 +421,6 @@ function ballPhysics()
     {
         // CPU scores
         score2++;
-        // update scoreboard HTML
-        document.getElementById("scores").innerHTML = score1 + "-" + score2;
         // reset ball to center
         resetBall(2);
         matchScoreCheck();
@@ -421,8 +431,6 @@ function ballPhysics()
     {
         // Player scores
         score1++;
-        // update scoreboard HTML
-        document.getElementById("scores").innerHTML = score1 + "-" + score2;
         // reset ball to center
         resetBall(1);
         matchScoreCheck();
@@ -647,36 +655,46 @@ var bounceTime = 0;
 // checks if either player or opponent has reached 7 points
 function matchScoreCheck()
 {
-    // if player has 7 points
-    if (score1 >= maxScore)
+    // update scoreboard HTML
+    document.getElementById("scores").innerHTML = score1 + "-" + score2;
+
+    var done = false;
+
+    if (score1 >= maxScore) {
+        if (paddleId == 1) {
+            done = "You win!";
+        } else if (paddleId == 2) {
+            done = "You lose!";
+        } else {
+            done = "Player 1 won!"
+        }
+    } else if (score2 >= maxScore) {
+        if (paddleId == 2) {
+            done = "You win!";
+        } else if (paddleId == 1) {
+            done = "You lose!";
+        } else {
+            done = "Player 1 won!"
+        }
+    }
+
+    if (done !== false)
     {
         // stop the ball
         ballSpeed = 0;
         // write to the banner
-        document.getElementById("scores").innerHTML = "You win!";
+        document.getElementById("scores").innerHTML = done;
         document.getElementById("winnerBoard").innerHTML = "Refresh to play again";
-        // make paddle bounce up and down
-        bounceTime++;
-        paddle1.position.z = Math.sin(bounceTime * 0.1) * 10;
-        // enlarge and squish paddle to emulate joy
-        paddle1.scale.z = 2 + Math.abs(Math.sin(bounceTime * 0.1)) * 10;
-        paddle1.scale.y = 2 + Math.abs(Math.sin(bounceTime * 0.05)) * 10;
     }
-    // else if opponent has 7 points
-    else if (score2 >= maxScore)
-    {
-        // stop the ball
-        ballSpeed = 0;
-        // write to the banner
-        document.getElementById("scores").innerHTML = "You loose!";
-        document.getElementById("winnerBoard").innerHTML = "Refresh to play again";
-        // make paddle bounce up and down
-        bounceTime++;
-        paddle2.position.z = Math.sin(bounceTime * 0.1) * 10;
-        // enlarge and squish paddle to emulate joy
-        paddle2.scale.z = 2 + Math.abs(Math.sin(bounceTime * 0.1)) * 10;
-        paddle2.scale.y = 2 + Math.abs(Math.sin(bounceTime * 0.05)) * 10;
-    }
+}
+
+function bouncePaddle(paddle) {
+    // make paddle bounce up and down
+    bounceTime++;
+    paddle.position.z = Math.sin(bounceTime * 0.1) * 10;
+    // enlarge and squish paddle to emulate joy
+    paddle.scale.z = 2 + Math.abs(Math.sin(bounceTime * 0.1)) * 10;
+    paddle.scale.y = 2 + Math.abs(Math.sin(bounceTime * 0.05)) * 10;
 }
 
 function getFacePos() {

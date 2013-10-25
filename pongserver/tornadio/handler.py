@@ -47,7 +47,7 @@ class IOConnection(tornadio2.conn.SocketConnection):
         self.emit("pingback", position)
 
     @event
-    def game(self, ball, paddle1, paddle2):
+    def game(self, ball, paddle1, paddle2, score1, score2):
         #self.l("---- GAME Event ----")
         #self.l(ball)
         #self.l(paddle1)
@@ -57,6 +57,8 @@ class IOConnection(tornadio2.conn.SocketConnection):
                 "ball": ball,
                 "paddle1": paddle1,
                 "paddle2": paddle2,
+                "score1": score1,
+                "score2": score2,
             })
 
     def on_open(self, info):
