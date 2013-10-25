@@ -12,11 +12,10 @@ import sys
 import tornadio2
 import tornado
 
-
 class IndexHandler(tornado.web.RequestHandler):
     """Index Page handler : TESTING ONLY"""
     def get(self):
-        self.render(settings.DOCUMENT_ROOT + '/resources/io.html')
+        self.render(settings.DOCUMENT_ROOT + '/resources/index.html')
 
 class SocketIOHandler(tornado.web.RequestHandler):
     def get(self):
@@ -31,6 +30,18 @@ class WebSocketFileHandler(tornado.web.RequestHandler):
             self.write(f.read())
             self.finish()
 
+class StartGameHandler(tornado.web.RequestHandler):
+    """Index Page handler : TESTING ONLY"""
+    def get(self):
+        self.render(settings.DOCUMENT_ROOT + '/resources/start.html')
+
+    def post(self):
+        import pdb; pdb.set_trace()
+        file1 = self.request.files['image_file'][0]
+        # now you can do what you want with the data, we will just save the file to an uploads folder
+        output_file = open(settings.RESOURCES_ROOT + "/images/" + file1['filename'], 'w')
+        output_file.write(file1['body'])
+        self.redirect('/game/')
 
 def application(argv=None):
     print "start"
@@ -47,6 +58,7 @@ def application(argv=None):
     application = tornado.web.Application(
     SocketRouter.apply_routes([(r"/", IndexHandler),
                              (r"/socket.io.js", SocketIOHandler),
+                             (r"/start/", StartGameHandler),
                              (r"/resources/(.*)", tornado.web.StaticFileHandler,
                                     {"path": settings.RESOURCES_ROOT}),
                              (r"/WebSocketMain.swf", WebSocketFileHandler)

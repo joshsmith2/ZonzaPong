@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            ZonzaPong
+        </title>
+        <meta name="description" content="ZonzaPong">
+        <meta name="author" content="WeAreTheSkills">
+        <link rel="stylesheet" href="/resources/css/style.css" type="text/css">
+    </head>
+    <body>
+        <div id="container">
+            <div id="logged-out">
+                <h1>
+                    Upload a file to start a game
+                </h1>
+                <form id="upload_form" enctype="multipart/form-data" method="post" action="/start/">
+                    <div>
+                        <div>
+                            <label for="image_file">Please select image file</label>
+                        </div>
+                        <div>
+                            <input type="file" name="image_file" id="image_file">
+                        </div>
+                    </div>
+                    <div>
+                        <input type="submit" value="Start Game">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="page-footer">
+            <ul>
+                <li class="about">
+                    <a href="/about/">About ZonzaPong</a>
+                </li>
+                <li class="hogarth">
+                    <a target="_blank" href="http://www.hogarthww.com/">Hogarth Worldwide</a>
+                </li>
+                <li class="contact">
+                    <a href="/accounts/contact/">Contact Us</a>
+                </li>
+            </ul>
+            <p class="copyright">
+                Copyright © Hogarth Worldwide 2011-2013
+            </p>
+        </div>
+    </body>
+</html>

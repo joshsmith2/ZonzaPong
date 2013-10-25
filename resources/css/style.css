@@ -1,0 +1,108 @@
+body {
+  background-color: #FFFFFF;
+}
+
+#container {
+  background-color: #EEEEEE;
+  background-image: url("http://zonza.tv/sitemedia/css/../img/login/bg.png");
+  background-position: center bottom;
+  background-repeat: repeat-x;
+}
+
+#logged-out {
+  background: url("../img/main-logo.png") no-repeat scroll center 80px rgba(0, 0, 0, 0);
+  margin: 0 auto;
+  min-height: 290px;
+  padding-top: 350px;
+  text-align: left;
+  width: 570px;
+}
+#page-footer {
+  font-weight: bold;
+  margin: 0 auto;
+  max-width: 1024px;
+  min-width: 570px;
+  padding: 30px 0;
+  position: relative;
+}
+
+#page-footer .copyright {
+  background: url("http://zonza.tv/sitemedia/css/../img/footer-bg2.png") no-repeat scroll right 2em rgba(0, 0, 0, 0);
+  color: #CCCCCC;
+  height: 80px;
+  margin-top: 1.4em;
+  position: absolute;
+  right: 40px;
+  top: 41px;
+}
+
+body, label, button {
+  font: 11px/14px 'Helvetica Neue',Helvetica,Arial,sans-serif;
+  text-rendering: optimizelegibility;
+}
+
+#page-footer {
+  font-weight: bold;
+}
+
+a:link {
+  color: #087DC2;
+  text-decoration: none;
+}
+
+#page-footer ul {
+  margin: 0 40px;
+}
+
+#page-footer ul li {
+  text-decoration: none;
+}
+
+#container, #page-footer {
+  font-size: 1.2em;
+  line-height: 1.4em;
+}
+
+#page-footer .about {
+  border-bottom: 1px solid #CCCCCC;
+  padding-bottom: 5px;
+}
+
+#logged-out a {
+  color: #087dc2;
+}
+
+#logged-out h1 {
+    margin-bottom: 40px;
+}
+
+#logged-out a.button {
+  -moz-appearance: none;
+  background-color: #70C172;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px 6px 6px 6px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.2em;
+  font-weight: bold;
+  line-height: 1.4em;
+  padding: 3px 10px;
+  position: relative;
+  text-align: center;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  top: 0;
+  vertical-align: bottom;
+  width: 100%;
+}
+
+html body div#page-footer ul li {
+  list-style-type: none;
+  color: #087DC2;
+  text-decoration: none;
+}
+.bar {
+    height: 18px;
+    background: green;
+}
