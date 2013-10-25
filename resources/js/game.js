@@ -47,7 +47,7 @@ function initSocket() {
 
     socket.on('game', function(data) {
 
-        console.log(data);
+//        console.log(data);
         if (window.paddleId != 1) {
             ball.position = data.ball;
             paddle1.position = data.paddle1;
@@ -66,6 +66,11 @@ function initSocket() {
     socket.on('register', function(paddle_id) {
         window.paddleId = parseInt(paddle_id);
         console.log(window.paddleId);
+        if (paddle_id == 2) {
+            $('#scoreboard h4').html('You are player ' + paddle_id + ', the top one');
+        } else {
+            $('#scoreboard h4').html('You are player ' + paddle_id);
+        }
     });
 
     socket.on('start', function() {
@@ -74,6 +79,9 @@ function initSocket() {
 
     socket.emit('register');
 
+    socket.on('notregistered', function() {
+        $('#scoreboard h4').html('observer');
+    });
 }
 
 window.face = 0;
@@ -205,7 +213,7 @@ function createScene()
     var groundMaterial =
       new THREE.MeshLambertMaterial(
         {
-	
+
 			map: THREE.ImageUtils.loadTexture('/resources/images/zonzaLogoTrans.jpg')
 
         });
@@ -254,13 +262,13 @@ function createScene()
         {
 			map: THREE.ImageUtils.loadTexture(planeImage)
         });
-	
+
 	}else{
 
     var radius = 5,
         segments = 6,
         rings = 6;
-    
+
 	// create the sphere's material
     var sphereMaterial =
       new THREE.MeshLambertMaterial(
@@ -444,14 +452,16 @@ function draw()
     player1PaddleMovementFace();
     player2PaddleMovementFace();
 
-    socket.emit('game', {
-        "ball": ball.position,
-        "paddle1": paddle1.position,
-        "paddle2": paddle2.position,
-        "score1": score1,
-        "score2": score2
-    });
-
+    if (paddleId == 1 || paddleId == 2) {
+        socket.emit('game', {
+            "ball": ball.position,
+            "paddle1": paddle1.position,
+            "paddle2": paddle2.position,
+            "score1": score1,
+            "score2": score2
+        });
+    }
+    
     if (score1 >= maxScore) {
         bouncePaddle(paddle1);
     } else if (score2 >= maxScore) {

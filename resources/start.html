@@ -16,16 +16,11 @@
                     Upload a file to start a game
                 </h1>
                 <form id="upload_form" enctype="multipart/form-data" method="post" action="/start/">
-                    <div>
-                        <div>
-                            <label for="image_file">Please select image file</label>
-                        </div>
-                        <div>
-                            <input type="file" name="image_file" id="image_file">
-                        </div>
+                    <div style="opaticy: 0">
+                        <input type="file" name="image_file" id="image_file" class="button">
                     </div>
                     <div>
-                        <input type="submit" value="Start Game">
+                        <input class="start" type="submit" value="Start Game">
                     </div>
                 </form>
             </div>
@@ -46,5 +41,6 @@
                 Copyright © Hogarth Worldwide 2011-2013
             </p>
         </div>
+
     </body>
 </html>

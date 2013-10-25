@@ -76,7 +76,7 @@ a:link {
     margin-bottom: 40px;
 }
 
-#logged-out a.button {
+#logged-out a.button, input.start, .button:before {
   -moz-appearance: none;
   background-color: #70C172;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -96,8 +96,12 @@ a:link {
   vertical-align: bottom;
   width: 100%;
 }
+input.start {
+    margin-top: 40px;
 
-html body div#page-footer ul li {
+}
+
+#page-footer ul li {
   list-style-type: none;
   color: #087DC2;
   text-decoration: none;
@@ -105,4 +109,12 @@ html body div#page-footer ul li {
 .bar {
     height: 18px;
     background: green;
+}
+.button:before {
+    width: 100%;
+}
+
+.button {
+  height: 35px;
+  width: 180px;
 }

@@ -12,6 +12,7 @@ import sys
 import tornadio2
 import tornado
 from tornado import template
+import zlib
 
 class IndexHandler(tornado.web.RequestHandler):
     """Index Page handler : TESTING ONLY"""
@@ -45,10 +46,13 @@ class StartGameHandler(tornado.web.RequestHandler):
 
     def post(self):
         file1 = self.request.files['image_file'][0]
+        filename = zlib.crc32('youareadick')
+        filename = '{}{}'.format(filename, file1['filename'])
         # now you can do what you want with the data, we will just save the file to an uploads folder
-        output_file = open(settings.RESOURCES_ROOT + "/images/" + file1['filename'], 'w')
+        output_file = open(settings.RESOURCES_ROOT + "/images/" + filename, 'w')
         output_file.write(file1['body'])
         self.redirect('/game/?token='+file1['filename'])
+        self.redirect('/game/?token={}'.format(filename))
 
 def application(argv=None):
     print "start"
