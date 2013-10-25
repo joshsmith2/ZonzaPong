@@ -28,7 +28,7 @@ var score1 = 0, score2 = 0;
 // you can change this to any positive whole number
 var maxScore = 7;
 
-var face1 = false;
+var face1 = true;
 var face2 = false;
 
 var paddleId = 0;
@@ -66,6 +66,9 @@ function initSocket() {
 
 }
 
+window.face = 0;
+window.sensitivity = 3.0;
+window.ready = false;
 // ------------------------------------- //
 // ------- GAME FUNCTIONS -------------- //
 // ------------------------------------- //
@@ -377,7 +380,9 @@ function draw()
     renderer.render(scene, camera);
     // loop draw function call
     requestAnimationFrame(draw);
-    ballPhysics();
+    if (window.ready) {
+        ballPhysics();
+    }
     paddlePhysics();
     cameraPhysics();
     player1PaddleMovementFace();
@@ -673,7 +678,13 @@ function player1PaddleMovementFace()
 {
     if (face1 !== false)
     {
-        paddle1.position.y = face;
+        var calc = parseInt((-window.face * window.sensitivity) * 90)
+        if (calc > 90) {
+            calc = 90;
+        } else if (calc < -90) {
+            calc = -90;
+        }
+        paddle1.position.y = calc;
     }
     else
     {
@@ -692,3 +703,9 @@ function player2PaddleMovementFace()
         player2PaddleMovement();
     }
 }
+
+$(function () {
+    $('#ready').click(function() {
+        window.ready = true;
+    });
+});

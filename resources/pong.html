@@ -30,13 +30,29 @@
 				background-color: white;
 				color: black;
 			}
+
+            #webcam {
+                color: white;
+            }
+
+            #webcam .input {
+                display: none;
+            }
+
+            #webcam .outputCanvas {
+                -webkit-transform: scaleX(-1);
+            }
 		</style>
 	</head>
 	<body onload='setup();'>
 		<div id='gameCanvas'></div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 		<script src='/resources/js/three.min.js'></script>
 		<script src='/resources/js/keyboard.js'></script>
 		<script src='/resources/js/game.js'></script>
+        <script src='/resources/js/headtrackr.js'></script>
+        <script src="/resources/js/face.js"></script>
+
 		<div id='scoreboard'>
 			<h1 id='scores'>0-0</h1>
 			<h1 id='title'>3D PONG</h1>
@@ -44,5 +60,12 @@
 			<h3>A - move left
 			<br>D - move right</h3>
 		</div>
+        <div id="webcam">
+            <canvas width="320" height="240" class="outputCanvas"></canvas>
+            <canvas width="320" height="240" class="inputCanvas input"></canvas>
+            <video class="inputVideo input" autoplay loop></video>
+            Sensitivity: <input type="range" class="sens" min="0" max="10" value="5">
+        </div>
+        <input type="button" id="ready" value="Ready" />
 	</body>
 </html>
