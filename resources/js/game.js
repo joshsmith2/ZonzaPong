@@ -452,14 +452,16 @@ function draw()
     player1PaddleMovementFace();
     player2PaddleMovementFace();
 
-    socket.emit('game', {
-        "ball": ball.position,
-        "paddle1": paddle1.position,
-        "paddle2": paddle2.position,
-        "score1": score1,
-        "score2": score2
-    });
-
+    if (paddleId == 1 || paddleId == 2) {
+        socket.emit('game', {
+            "ball": ball.position,
+            "paddle1": paddle1.position,
+            "paddle2": paddle2.position,
+            "score1": score1,
+            "score2": score2
+        });
+    }
+    
     if (score1 >= maxScore) {
         bouncePaddle(paddle1);
     } else if (score2 >= maxScore) {
