@@ -1,8 +1,69 @@
 <!doctype html><title>Minimal tQuery Page</title>
 <script src="headtrackr.js"></script>
 <script src="tquery-bundle.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <body><script>
     var world = tQuery.createWorld().boilerplate().start();
+    world.removeCameraControls();
+    var cube = tQuery.createCube().addTo(world);
     var headTracker    = tQuery.createHeadtrackr().start();
     headTracker.debugView(true);
+    headTracker.addEventListener("found", function(event){
+        cube.position(event.x, event.y, (event.width + event.height) / 2);
+        cube.rotation(event.angle, event.angle, event.angle);
+        console.log(event.x, event.y, event.angle);
+    });
+
+//    var width = 320;
+//    var height = 240;
+//
+//    function cb(event) {
+//        console.log(event.x, event.y, event.z);
+//    }
+//
+//	document.addEventListener("headtrackingEvent", cb);
+//
+//
+//	// create videoInput element to read the webcam
+//	var videoInput	= document.createElement('video');
+//	videoInput.setAttribute('autoplay');
+//	videoInput.setAttribute('loop');
+//	videoInput.setAttribute('width'	, width);
+//	videoInput.setAttribute('height', height);
+//	videoInput.style.display	= 'none';
+//
+//	// create canvasInput element to read the webcam
+//	var canvasInput	= document.createElement('canvas');
+//	canvasInput.setAttribute('width' , width);
+//	canvasInput.setAttribute('height', height);
+//
+//
+//	// create the headtracker itself
+//    var htracker	= new headtrackr.Tracker({calcAngles	: true});
+//    htracker.init(videoInput, canvasInput);
+//    htracker.start();
+//
+//    // Create a preview
+//    var canvasView		= document.createElement('canvas');
+//    document.body.appendChild(canvasView);
+//canvasView.setAttribute('width' , width);
+//canvasView.setAttribute('height' , height);
+//// put it on topleft absolute
+//canvasView.style.position	= 'absolute';
+//canvasView.style.top		= '0px';
+//canvasView.style.left		= '0px';
+//// mirror horizontal - needed as it is from the webcam
+//canvasView.style.transform	= 'scaleX(-1)'
+//canvasView.style.webkitTransform= 'scaleX(-1)'
+//canvasView.style.mozTransform	= 'scaleX(-1)'
+//canvasView.style.oTransform	= 'scaleX(-1)'
+//// handle zIndex to be above the reset
+//canvasView.style.zIndex		= '1';
+//
+//
+//    document.addEventListener("facetrackingEvent", function(event) {
+//        var context = canvasView.getContext('2d');
+//        context.drawImage(videoInput, 0, 0, width, height);
+//
+//    });
 </script></body>
