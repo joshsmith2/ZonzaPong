@@ -100,6 +100,7 @@ var uid = "0001"
 //Contruct image location
 var planeImage = '/resources/images/image-' + uid + '.png'
 
+
 //Initialise lighting presets
 switch (lights){
 
@@ -119,7 +120,12 @@ switch (lights){
 function setup()
 {
     // update the board to reflect the max score for match win
-    document.getElementById("winnerBoard").innerHTML = "First to " + maxScore + " wins!";
+    document.getElementById("winnerBoard").innerHTML = "First to " + maxScore ;
+
+    //Construct board image
+    planeImage = '/resources/images/-2011187839' + unescape(document.getElementById("token").innerHTML);
+    console.log(planeImage);
+
 
     // now reset player and opponent scores
     score1 = 0;
@@ -193,8 +199,8 @@ function createScene()
     var planeMaterial =
       new THREE.MeshLambertMaterial(
         {
-			//color: 0x534525
-			map: THREE.ImageUtils.loadTexture(planeImage)
+		//color: 0x534525
+		map: THREE.ImageUtils.loadTexture(planeImage)
         });
 
     // create the table's material
@@ -260,7 +266,7 @@ function createScene()
     var sphereMaterial =
       new THREE.MeshLambertMaterial(
         {
-			map: THREE.ImageUtils.loadTexture(planeImage)
+		map: THREE.ImageUtils.loadTexture(planeImage)
         });
 
 	}else{
@@ -647,8 +653,8 @@ function paddlePhysics()
                 // stretch the paddle to indicate a hit
                 // switch direction of ball travel to create bounce
                 ballDirX = -ballDirX;
-                ballSpeed += 0.1;
-                paddleSpeed += 0.3;
+                ballSpeed += 0.2;
+                paddleSpeed += 0.5;
                 // we impact ball angle when hitting it
                 // this is not realistic physics, just spices up the gameplay
                 // allows you to 'slice' the ball to beat the opponent
@@ -705,8 +711,8 @@ function resetBall(loser)
 
     // set the ball to move +ve in y plane (towards left from the camera)
     ballDirY = 0.3;
-    ballSpeed = 2;
-    paddleSpeed = 3;
+    ballSpeed = 3;
+    paddleSpeed = 4;
 }
 
 var bounceTime = 0;
@@ -714,7 +720,8 @@ var bounceTime = 0;
 function matchScoreCheck()
 {
     // update scoreboard HTML
-    document.getElementById("scores").innerHTML = score1 + "-" + score2;
+    document.getElementById("p1score").innerHTML = score1;
+    document.getElementById("p2score").innerHTML = score2;
 
     var done = false;
 

@@ -72,7 +72,7 @@ a:link {
   color: #087dc2;
 }
 
-#logged-out h1 {
+h1#logged-out {
     margin-bottom: 40px;
 }
 
@@ -132,11 +132,26 @@ input.start {
     font-family: Segoe UI, Helvetica, Ubuntu, sans-serif;
     color: #000;
 }
-#scores {
+.score {
     font-size:600%;
     padding:0;
-    margin:0;
-    color: #087dc2;
+    color: #fff;
+	width: 48%;
+	float: left;
+	line-height: 1em;
+	margin: 24px 0;
+}
+
+#p1score{
+	text-align: right;
+	padding-right: 2%;
+	background-color: #70c171
+}
+
+#p2score{
+	text-align: left;
+	padding-left: 2%;
+	background-color: #087dc2;
 }
 
 #title {
@@ -159,4 +174,13 @@ input.start {
 #headtrackerMessageDiv {
     height: 700px;
     width: 700px;
+}
+
+#text-container {
+	background-color:  #fff;
+	padding-bottom: 5px;
+}
+
+.shadow {
+	box-shadow: -5px 5px 7px 1px rgba(88,88,88,0.52);
 }

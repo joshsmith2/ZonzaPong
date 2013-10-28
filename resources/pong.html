@@ -13,7 +13,7 @@
 	<body onload='setup();'>
         <div id="container">
             <div id="logged-out">
-                <div id='gameCanvas'></div>
+                <div id='gameCanvas' class="shadow"></div>
                 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
                 <script src='/resources/js/three.min.js'></script>
                 <script src='/resources/js/keyboard.js'></script>
@@ -21,12 +21,19 @@
                 <script src='/resources/js/headtrackr.js'></script>
                 <script src="/resources/js/face.js"></script>
 		<div id='scoreboard'>
-			<h1 id='scores'>0-0</h1>
-			<h1 id='title'>3D PONG</h1>
-			<h2 id='winnerBoard'>First to 7 wins!</h2>
-			<h3>Allow webcam
-			<br>And move your head!</h3>
-            <h4></h4>
+			
+			<div id ='scores'>
+				<h1 class='score' id='p1score'>0</h1>
+				<h1 class='score' id='p2score'>0</h1>
+			</div>
+
+			<div id="text-container" class="shadow">
+				<!--<h1 id='title'>3D PONG</h1>-->
+				<h2 id='winnerBoard'>First to 7 wins!</h2>
+				<h3>Allow webcam
+				<br>And move your head!</h3>
+				<h4></h4>
+			</div>
 		</div>
 		<span class="attributes" style="display: none">
 			<span id="token">{{token}}</span>
